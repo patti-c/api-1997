@@ -5,8 +5,9 @@ class User < ApplicationRecord
   has_many :friend_requests, dependent: :destroy
   has_many :desired_friendships, through: :friend_requests, source: :adder
   has_many :pending_requests, through: :friend_requests, source: :added
+
   has_many :relationships, dependent: :destroy
-  has_many :added_users, through: :relationships
+  has_many :friends, through: :relationships
 
   def add_friend(new_friend)
     if User.find(new_friend.id)

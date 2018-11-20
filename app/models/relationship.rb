@@ -7,7 +7,7 @@ class Relationship < ApplicationRecord
   private
 
   def create_inverse_relationship
-    if(!friend.relationships.include?(user))
+    if(!friend.friends.include?(user))
       friend.relationships.create(friend: user)
     end
   end
