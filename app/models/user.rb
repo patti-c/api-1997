@@ -1,5 +1,14 @@
 class User < ApplicationRecord
-  has_many :conversations
+
+  # SECURITY AND VALIDATIONS
+
+  has_secure_password
+  validates :username, uniqueness: { case_sensitive: false }
+  validates :email, uniqueness: true
+
+  # DATABASE RELATIONSHIPS
+
+
   has_many :messages, through: :conversations
 
   has_many :friend_requests, dependent: :destroy
@@ -8,6 +17,9 @@ class User < ApplicationRecord
 
   has_many :relationships, dependent: :destroy
   has_many :friends, through: :relationships
+  has_many :conversations, through: :friends
+
+  # METHODS
 
   def add_friend(new_friend)
     if User.find(new_friend.id)
