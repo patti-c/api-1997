@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       post '/login', to: 'auth#create'
       get '/userdata', to: 'users#userdata'
       post '/get_conversation', to: 'conversations#get_conversation'
+      post '/accept_request', to: 'users#accept_friend_request'
+      post '/deny_request', to: 'users#deny_friend_request'
     end
   end
 

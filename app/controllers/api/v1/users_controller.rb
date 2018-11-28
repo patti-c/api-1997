@@ -22,6 +22,32 @@ class Api::V1::UsersController < ApplicationController
     }, status: :accepted
   end
 
+  def send_friend_request
+    params.permit(:adder, :added)
+    adder = User.find_by(username: params[:adder])
+    added = User.find_by(username: params[:added])
+    friend_request = FriendRequest.find_or_create_by(adder: adder, added: added)
+    render json: { message: 'Friend Request Created' }, status: :created
+  end
+
+  def accept_friend_request
+    params.permit(:adder, :added)
+    adder = User.find_by(username: params[:adder])
+    added = User.find_by(username: params[:added])
+    friend_request = FriendRequest.find_by(adder: adder, added: added)
+    friend_request.accept
+    render json: { message: 'Friend Request Accepted' }, status: :accepted
+  end
+
+  def deny_friend_request
+    params.permit(:adder, :added)
+    adder = User.find_by(username: params[:adder])
+    added = User.find_by(username: params[:added])
+    friend_request = FriendRequest.find_by(adder: adder, added: added)
+    friend_request.deny
+    render json: { message: 'Friend Request Denied' }, status: :accepted
+  end
+
   private
 
   def user_params
