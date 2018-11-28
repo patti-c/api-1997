@@ -10,6 +10,10 @@ class Api::V1::ConversationsController < ApplicationController
     friend = current_user.friends.find_by(username: params[:username])
     relationship = current_user.relationships.find_by(friend_id: friend.id)
     conversation = Conversation.find_or_create_by(relationship_id: relationship.id)
+
+    if(!friend.relationships.find_by(friend_id: current_user.id).conversation)
+       friend.relationships.find_by(friend_id: current_user.id).conversation = conversation
+     end
     render json: conversation
   end
 

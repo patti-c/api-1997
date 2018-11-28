@@ -11,4 +11,12 @@ class FriendRequest < ApplicationRecord
     destroy
   end
 
+  def added_name
+    User.where(id: self.added_id)[0].username
+  end
+
+  def adder_name
+    User.where(id: self.adder_id)[0].username
+  end
+
 end
