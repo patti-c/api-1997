@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       post '/get_conversation', to: 'conversations#get_conversation'
       post '/accept_request', to: 'users#accept_friend_request'
       post '/deny_request', to: 'users#deny_friend_request'
+      post '/send_friend_request', to: 'users#send_friend_request'
     end
   end
 
