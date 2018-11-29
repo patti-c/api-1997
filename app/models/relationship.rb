@@ -9,6 +9,10 @@ class Relationship < ApplicationRecord
   def create_inverse_relationship
     if(!friend.friends.include?(user))
       friend.relationships.create(friend: user)
+      convo = Conversation.create()
+      convo.users << user
+      convo.users << friend
+      return convo
     end
   end
 

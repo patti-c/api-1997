@@ -2,7 +2,6 @@ class Api::V1::MessagesController < ApplicationController
 
   def create
     params.permit(:text, :conversationId, :message, :user)
-    byebug
     message = Message.new(text: params[:text], conversation_id: params[:conversationId], username: params[:user])
     conversation = Conversation.find_or_create_by(id: params[:conversationId])
     if message.save
