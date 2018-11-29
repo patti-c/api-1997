@@ -3,8 +3,9 @@ class FriendRequest < ApplicationRecord
   belongs_to :adder, class_name: "User"
 
   def accept
-    Relationship.create(user: added, friend: adder)
+    relationship = Relationship.create(user: added, friend: adder)
     destroy
+    return relationship
   end
 
   def deny

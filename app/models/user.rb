@@ -12,7 +12,8 @@ class User < ApplicationRecord
 
   has_many :relationships, dependent: :destroy
   has_many :friends, through: :relationships
-  has_many :conversations, through: :friends
+  has_many :user_conversations
+  has_many :conversations, through: :user_conversations
 
   # METHODS
 

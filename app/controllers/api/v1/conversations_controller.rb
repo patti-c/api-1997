@@ -8,13 +8,20 @@ class Api::V1::ConversationsController < ApplicationController
   def get_conversation
     params.permit(:username)
     friend = current_user.friends.find_by(username: params[:username])
-    relationship = current_user.relationships.find_by(friend_id: friend.id)
-    conversation = Conversation.find_or_create_by(relationship_id: relationship.id)
 
-    if(!friend.relationships.find_by(friend_id: current_user.id).conversation)
-       friend.relationships.find_by(friend_id: current_user.id).conversation = conversation
-     end
-    render json: conversation
+    conversation = current_user.conversations.map{|convo| convo.users.include?(friend)}
+
+    byebug
+
+    if conversation
+      render json: { conversation: ConversationSerializer.new(conversation)}, status: :accepted
+    else
+      newConvo = Conversation.create()
+      newConvo.users << current_user
+      newConvo.users << friend
+      render json: { conversation: ConversationSerializer.new(newConvo)}, status: :created
+    end
+
   end
 
   def create
