@@ -39,15 +39,12 @@ class Api::V1::UsersController < ApplicationController
     adder = User.find_by(username: params[:adder])
     added = User.find_by(username: params[:added])
     friend_request = FriendRequest.find_by(adder: adder, added: added)
-
-
     if(friend_request)
       relationship = friend_request.accept
       render json: { message: 'Friend Request Created' }, status: :created
     else
       render json: { message: 'Friend Request Failed' }, status: :unacceptable
     end
-
   end
 
   def deny_friend_request
