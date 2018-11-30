@@ -31,14 +31,20 @@ class User < ApplicationRecord
     FriendRequest.where(adder_id: self.id).map{|request| request.added_name}
   end
 
-  def is_online
+  def is_online?
+    self.online
+  end
 
+  def is_online
+    self.online = true
+    self.save
+    self.online
   end
 
   def is_offline
-    
-  end
-
+    self.online = false
+    self.save
+    return self.online
   end
 
 end

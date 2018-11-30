@@ -4,6 +4,7 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.valid?
+      @user.is_online
       render json: {
         user: UserSerializer.new(@user),
         pending_requests: @user.pending_requests,
@@ -15,6 +16,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def userdata
+    current_user.is_online
+    UsersChannel.broadcast_to @user, "online"
     render json: {
       user: UserSerializer.new(current_user),
       pending_requests: current_user.pending_requests,
@@ -58,6 +61,11 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { message: 'Unacceptable request' }, status: :unacceptable
     end
+  end
+
+  def logout
+    current_user.is_offline
+    UsersChannel.broadcast_to current_user, "offline"
   end
 
   private
