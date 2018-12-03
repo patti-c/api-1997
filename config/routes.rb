@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       post '/logout', to: 'users#logout'
       post '/hide', to: 'users#hide'
       post '/unhide', to: 'users#unhide'
+      post 'mute', to: 'users#mute'
+      post 'unmute', to: 'users#unmute'
     end
   end
 

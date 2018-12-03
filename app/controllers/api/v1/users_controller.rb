@@ -4,11 +4,13 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.valid?
-      @user.is_online
+      token = encode_token({ user_id: @user.id })
+      @user.update(online: true)
       render json: {
         user: UserSerializer.new(@user),
         pending_requests: @user.pending_requests,
-        desired_friendships: @user.desired_friendships
+        desired_friendships: @user.desired_friendships,
+        jwt: token
       }, status: :created
     else
       render json: { error: 'Failed to create user.' }, status: :not_acceptable
@@ -72,16 +74,30 @@ class Api::V1::UsersController < ApplicationController
     if (!current_user.hidden)
       UsersChannel.broadcast_to current_user, "offline"
     end
+    render json: { message: 'Logged out' }, status: :accepted
   end
 
   def hide
-    current_user.hidden = true
+    current_user.update(hidden: true)
     UsersChannel.broadcast_to current_user, "offline"
+    render json: { message: 'Usere hidden' }, status: :accepted
   end
 
   def unhide
-    current_user.hidden = false
+    current_user.update(hidden: false)
     UsersChannel.broadcast_to current_user, "online"
+    render json: { message: 'User visible' }, status: :accepted
+  end
+
+
+  def mute
+    current_user.update(muted: true)
+    render json: { message: 'Muted' }, status: :accepted
+  end
+
+  def unmute
+    current_user.update(muted: false)
+    render json: { message: 'Unmuted' }, status: :accepted
   end
 
   private
