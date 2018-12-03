@@ -36,8 +36,8 @@ class Api::V1::UsersController < ApplicationController
     adder = User.find_by(username: params[:adder])
     added = User.find_by(username: params[:added])
     friend_request = FriendRequest.find_or_create_by(adder: adder, added: added)
-    if(friend_request)
-      render json: { message: 'Friend Request Created' }, status: :created
+    if(friend_request.valid?)
+      render json: { message: 'Friend Request Sent' }, status: :created
     else
       render json: { message: 'Friend Request Failed' }, status: :unacceptable
     end

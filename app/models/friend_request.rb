@@ -1,6 +1,8 @@
 class FriendRequest < ApplicationRecord
   belongs_to :added, class_name: "User"
   belongs_to :adder, class_name: "User"
+  validates :adder, presence: true
+  validates :added, presence: true
 
   def accept
     relationship = Relationship.create(user: added, friend: adder)
