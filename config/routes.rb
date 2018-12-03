@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       post '/deny_request', to: 'users#deny_friend_request'
       post '/send_friend_request', to: 'users#send_friend_request'
       post '/logout', to: 'users#logout'
+      post '/hide', to: 'users#hide'
+      post '/unhide', to: 'users#unhide'
     end
   end
 

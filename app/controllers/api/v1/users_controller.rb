@@ -16,8 +16,12 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def userdata
-    current_user.is_online
-    UsersChannel.broadcast_to @user, "online"
+
+    if(!current_user.hidden)
+      current_user.is_online
+      UsersChannel.broadcast_to @user, "online"
+    end
+
     render json: {
       user: UserSerializer.new(current_user),
       pending_requests: current_user.pending_requests,
@@ -65,7 +69,19 @@ class Api::V1::UsersController < ApplicationController
 
   def logout
     current_user.is_offline
+    if (!current_user.hidden)
+      UsersChannel.broadcast_to current_user, "offline"
+    end
+  end
+
+  def hide
+    current_user.hidden = true
     UsersChannel.broadcast_to current_user, "offline"
+  end
+
+  def unhide
+    current_user.hidden = false
+    UsersChannel.broadcast_to current_user, "online"
   end
 
   private
