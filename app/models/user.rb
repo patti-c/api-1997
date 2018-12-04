@@ -36,15 +36,13 @@ class User < ApplicationRecord
   end
 
   def is_online
-    self.online = true
-    self.save
+    self.update(online: true)
     self.online
   end
 
   def is_offline
-    self.online = false
-    self.save
-    return self.online
+    self.update(online: false)
+    self.online
   end
 
 end

@@ -75,7 +75,7 @@ class Api::V1::UsersController < ApplicationController
     if (!current_user.hidden)
       UsersChannel.broadcast_to current_user, "offline"
     end
-    render json: { message: 'Logged out' }, status: :accepted
+    render json: { message: 'Logged out' }, status: :ok
   end
 
   def hide
