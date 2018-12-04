@@ -37,6 +37,7 @@ class Api::V1::UsersController < ApplicationController
     added = User.find_by(username: params[:added])
     friend_request = FriendRequest.find_or_create_by(adder: adder, added: added)
     if(friend_request.valid?)
+      ActionCable.server.broadcast `FriendRequests#{added.id}`, `#{adder} added you`
       render json: { message: 'Friend Request Sent' }, status: :created
     else
       render json: { message: 'Friend Request Failed' }, status: :unacceptable
