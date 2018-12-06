@@ -6,5 +6,5 @@ test:
 
 production:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://api-1997.herokuapp.com/1" } %>
+  url: <%= ENV.fetch("REDIS_URL") { "redis://h:p4abda67ebec19433aace010309f3d79590930e22ee0868a2b2e5ae887084e541@ec2-34-234-124-166.compute-1.amazonaws.com:16339" } %>
   channel_prefix: api-1997_production
